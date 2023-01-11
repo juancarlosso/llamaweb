@@ -44,7 +44,8 @@
                                         <td><div class="d-flex align-items-center"><span class="w-space-no">{{$cuenta->descripcion}}</span></div></td>
                                         <td>{{$cuenta->tabla_telefonos}}	</td>
                                         <td>{{$cuenta->troncal}}</td>
-                                        <td>{{$porcentaje}}</td>
+                                        {{-- echo "<span class='badge badge-purple'>{$porcentaje}%</span>" --}}
+                                        <td>{{$cuenta->porcentaje}}</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{route('cuentas.edit',$cuenta->id)}}" class="btn btn-info shadow btn-xs sharp mr-1" title="Editar"><i class="fas fa-pencil-alt"></i></a>

@@ -20,6 +20,10 @@
 	<link href="{{asset('assets/node_modules/select2/dist/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
 	<!--alerts CSS -->
     <link href="{{asset('assets/node_modules/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
+    <!-- Date picker plugins css -->
+    <link href="{{asset('assets/node_modules/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- Page plugins css -->
+    <link href="{{asset('assets/node_modules/clockpicker/dist/jquery-clockpicker.min.css')}}" rel="stylesheet">
 
 	<style>
 		.select2-selection {
@@ -262,6 +266,11 @@
 	<script src="{{asset('assets/node_modules/select2/dist/js/select2.full.min.js')}}" type="text/javascript"></script>
 	<!-- Sweet-Alert  -->
     <script src="{{asset('assets/node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+    <script src="{{asset('assets/node_modules/moment/moment.js')}}"></script>
+    <!-- Date Picker Plugin JavaScript -->
+    <script src="{{asset('assets/node_modules/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+    <!-- Clock Plugin JavaScript -->
+    <script src="{{asset('assets/node_modules/clockpicker/dist/jquery-clockpicker.min.js')}}"></script>
 	<script>
 		$(".close").click(function(){
 			$(".alert").alert("close");

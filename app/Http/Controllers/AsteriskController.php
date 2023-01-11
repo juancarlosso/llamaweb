@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AsteriskRequest;
 use App\Models\Asterisk;
 use Illuminate\Http\Request;
 
@@ -43,7 +44,7 @@ class AsteriskController extends Controller
     * @return
     *
     */
-    public function store(Request $request)
+    public function store(AsteriskRequest $request)
     {
         $asterisk = Asterisk::create($request->all());
         return redirect()->route('asterisk.index')->with('success','El Servidor Asterisk ha sido creado');
@@ -70,7 +71,7 @@ class AsteriskController extends Controller
     * @return
     *
     */
-    public function update(Request $request, Asterisk $asterisk)
+    public function update(AsteriskRequest $request, Asterisk $asterisk)
     {
         $asterisk->update($request->all());
         return redirect()->route('asterisk.index')->with('success','El Servidor Asterisk ha sido actualizado');

@@ -18,15 +18,8 @@
             <li> <a class="waves-effect waves-dark {{ request()->routeIs('home.*') ? 'active' : '' }}" href="{{route('home')}}"  aria-expanded="false"><i class="fas fa-home"></i><span class="hide-menu">Home</span></a></li>
             <li> <a class="waves-effect waves-dark {{ request()->routeIs('usuarios.*') ? 'active' : '' }}" href="{{route('usuarios.index')}}" aria-expanded="false"><i class="fas fa-users"></i><span class="hide-menu">Usuarios</span></a></li>
             <li> <a class="waves-effect waves-dark {{ request()->routeIs('clientes.*') ? 'active' : '' }}" href="{{route('clientes.index')}}" aria-expanded="false"><i class="fas fa-building"></i><span class="hide-menu">Clientes</span></a></li>
-            <li> <a class="has-arrow waves-effect waves-dark {{ (request()->routeIs('asterisk.*'))|| (request()->routeIs('cuentas.*'))  ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-cog"></i><span class="hide-menu">Configuración</span></a>
-                <ul aria-expanded="false" class="collapse {{ (request()->routeIs('asterisk.*'))|| (request()->routeIs('cuentas.*'))  ? 'in' : '' }}">
-                    <li> <a class="waves-effect waves-dark {{ request()->routeIs('asterisk.*') ? 'active' : '' }}" href="{{route('asterisk.index')}}" aria-expanded="false"><i class="fas fa-hdd"></i><span class="hide-menu"> Serv. Asterisk</span></a></li>
-                    <li> <a class="waves-effect waves-dark {{ request()->routeIs('cuentas.*') ? 'active' : '' }}" href="{{route('cuentas.index')}}" aria-expanded="false"><i class="fas fa-list"></i><span class="hide-menu"> Cuentas</span></a></li>
-                    <li> <a class="waves-effect waves-dark {{ request()->routeIs('importar.*') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-upload"></i><span class="hide-menu"> Importar Tels.</span></a></li>
-                    <li> <a class="waves-effect waves-dark {{ request()->routeIs('barridas.*') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-recycle"></i><span class="hide-menu"> Barridas</span></a></li>
-                    <li> <a class="waves-effect waves-dark {{ request()->routeIs('reporte.*') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-chart-pie"></i><span class="hide-menu"> Reporte</span></a></li>
-                </ul>
-            </li>
+            <li> <a class="waves-effect waves-dark {{ request()->routeIs('asterisk.*') ? 'active' : '' }}" href="{{route('asterisk.index')}}" aria-expanded="false"><i class="fas fa-hdd"></i><span class="hide-menu"> Serv. Asterisk</span></a></li>
+            <li> <a class="waves-effect waves-dark {{ request()->routeIs('cuentas.*') ? 'active' : '' }}" href="{{route('cuentas.index')}}" aria-expanded="false"><i class="fas fa-list"></i><span class="hide-menu"> Cuentas</span></a></li>
         </ul>
     </nav>
     <!-- End Sidebar navigation -->

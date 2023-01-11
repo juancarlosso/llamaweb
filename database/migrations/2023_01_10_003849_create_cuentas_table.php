@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('idcuenta',5)->nullable();
             $table->string('queue',20)->nullable();
             $table->string('ivr',20)->nullable();
-            $table->string('troncal',20)->nullable();
+            $table->string('troncal',50)->nullable();
             $table->string('incluir_buzon',1)->nullable();
             $table->integer('slot')->nullable();
             $table->timestamps();
