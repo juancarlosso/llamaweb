@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cuenta;
+use App\Models\Importa;
 use App\Models\Asterisk;
 use App\Helper\Funciones;
 use Illuminate\Http\Request;
+use App\Imports\CuentaImport;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\CuentaImportRequest;
 
 class CuentaController extends Controller
 {
@@ -146,9 +150,9 @@ class CuentaController extends Controller
             `tipo` varchar(50) NOT NULL DEFAULT 'NORMAL',
             `zap` varchar(20) NOT NULL DEFAULT '',
             `disposition` varchar(20) NOT NULL DEFAULT '',
-            `fecha_hora` datetime NOT NULL,
-            `tiempo` varchar(20) NOT NULL,
-            `amdcause` varchar(50) NOT NULL,
+            `fecha_hora` datetime DEFAULT NULL,
+            `tiempo` varchar(20) NOT NULL DEFAULT '',
+            `amdcause` varchar(50) NOT NULL DEFAULT '',
             `amd` varchar(20) NOT NULL DEFAULT '',
             KEY `telefono` (`telefono`),
             KEY `status` (`status`),
@@ -300,5 +304,19 @@ class CuentaController extends Controller
         return $slot;
     }
 
+
+    public function importarIndex($id){
+        return view('cuentas.importar')->with('cuenta_id',$id);
+    }
+
+    public function importData(CuentaImportRequest $request){        
+        Importa::truncate();
+		Excel::import(new CuentaImport, request()->file('import'));
+        $cuenta = Cuenta::findOrfail($request->cuenta_id);
+        $consulta="INSERT INTO {$cuenta->tabla_telefonos} (telefono) SELECT telefono from cuenta_importa";
+        //dd($cuenta);
+        DB::select($consulta);
+		return redirect()->route('cuentas.index')->with('success','El archivo de telefonos ha sido importado');
+	}
 
 }
