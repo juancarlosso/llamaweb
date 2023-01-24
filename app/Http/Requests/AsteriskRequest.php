@@ -24,7 +24,7 @@ class AsteriskRequest extends FormRequest
     public function attributes(){
         return [
          'descripcion' => '-Nombre del Servidor-',
-         'ip' => '-Ejecutivo-',
+         'ip' => '-IP Manager-',
          'usuario' => '-Telefono Ejecutivo-',
          'password' => '-Password Manager-',
          'puerto' => '-Puerto Manager-',
@@ -55,19 +55,14 @@ class AsteriskRequest extends FormRequest
         
         return [
             'descripcion' => 'required|max:255',
-            'ip' => 'required',
+            'ip' => 'required|ip',
             'usuario' => 'required',
             'password' => 'required',
             'puerto' => 'required',
-            'contexto' => 'required',
-            'contexto_cd' => 'required',
-            'marcar_login' => 'required',
+            'contexto_cd' => 'required',          
             'puerto_http' => 'required',
             'puerto_http_publico' => 'required',
-            'marcar_logout' => 'required',
-            'marcar_pausa' => 'required',
-            'marcar_despausa' => 'required',
-            'ip_mysql' => 'required',
+            'ip_mysql' => 'required|ip',
             'usuario_mysql' => 'required',
             'password_mysql' => 'required',
             'puerto_mysql' => 'required',

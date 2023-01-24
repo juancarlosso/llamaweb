@@ -59,7 +59,7 @@
                                     <input type="text" class="form-control" placeholder="" name="password" value="{{old('password',$asterisk->password)}}">
                                 </div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="form-group col-md-3">
                                     <label>Marcar Login<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="" name="marcar_login" value="{{old('marcar_login',$asterisk->marcar_login)}}">
@@ -76,12 +76,12 @@
                                     <label>Marcar Despausa<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="" name="marcar_despausa" value="{{old('marcar_despausa',$asterisk->marcar_despausa)}}">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
-                                <div class="form-group col-md-3">
+                                {{-- <div class="form-group col-md-3">
                                     <label>Contexto<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="" name="contexto" value="{{old('contexto',$asterisk->contexto)}}">
-                                </div>
+                                </div> --}}
                                 <div class="form-group col-md-3">
                                     <label>Contexto Click & Dial<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="" name="contexto_cd" value="{{old('contexto_cd',$asterisk->contexto_cd)}}">

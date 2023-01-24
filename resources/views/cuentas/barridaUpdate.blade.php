@@ -39,9 +39,9 @@
                                         <th align="center">ESTADO REINTEGRO</th>
                                       </tr>
                                     </thead>
-                                    <tbody>
-                                        {{-- {{$cuerpo_tabla}} --}}
-                                        <tr> 
+                                    <tbody id="tabla">
+                                        {{$cuerpo_tabla}}
+                                        {{-- <tr> 
                                             <th scope='row'>1</th> 
                                             <td>PROCESADOS</td> 
                                             <td align='center'>0</td>
@@ -52,7 +52,7 @@
                                             <td>ANSWERED - MACHINE</td> 
                                             <td align='center'>0</td>
                                             <td>No reintegrados</td> 
-                                        </tr>
+                                        </tr> --}}
                                     </tbody>
                                   </table>
                             </div>
