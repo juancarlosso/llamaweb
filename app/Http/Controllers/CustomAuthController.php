@@ -95,6 +95,10 @@ class CustomAuthController extends Controller
     */
     public function recoverPassword(Request $request)
     {
+        $request->validate([
+            'email' => 'required',
+        ]);
+        
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return back()->with('error', 'Email no encontrado en nuestros registros');

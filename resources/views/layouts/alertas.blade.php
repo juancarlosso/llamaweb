@@ -26,3 +26,13 @@
 </div>
 @endif
 
+@if($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span class="alert-inner--text">
+       @foreach ($errors->all() as $error)
+                 {{ $error }}<br>
+       @endforeach
+    </span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" class="btn-close"aria-label="Close"> <span aria-hidden="true"></span> </button>
+</div>
+@endif

@@ -39,9 +39,11 @@
                     <form method="post" class="form-horizontal form-material" id="loginform" action="{{route('login.custom')}}">
                         @csrf
                         <h3 class="text-center m-b-20">ACCESO AL PANEL</h3>
+                        @include('layouts.alertas')
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="email" placeholder="E-mail" name="email"> </div>
+                                <input class="form-control" type="email" placeholder="E-mail" name="email"> 
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12">
@@ -67,6 +69,7 @@
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <h3>RECUPERA PASSWORD</h3>
+                                @include('layouts.alertas')
                                 <p class="text-muted">Ingresa tu correo y te enviaremos tu acceso.</p>
                             </div>
                         </div>
