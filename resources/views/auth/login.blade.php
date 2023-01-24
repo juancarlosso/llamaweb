@@ -27,7 +27,7 @@
     <![endif]-->
 </head>
 
-<body class="skin-default card-no-border">
+<body class="skin-purple card-no-border">
     @include('layouts.preloader')
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
@@ -61,19 +61,6 @@
                                 <button class="btn w-100 btn-lg btn-info btn-rounded text-white" onclick="entrar();">Entrar</button>
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                                <div class="social">
-                                    <button class="btn  btn-facebook" data-bs-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fab fa-facebook-f"></i> </button>
-                                    <button class="btn btn-googleplus" data-bs-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" class="fab fa-google-plus-g"></i> </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group m-b-0">
-                            <div class="col-sm-12 text-center">
-                                Don't have an account? <a href="pages-register.html" class="text-info m-l-5"><b>Sign Up</b></a>
-                            </div>
-                        </div> --}}
                     </form>
                     <form method="post" class="form-horizontal" id="recoverform" action="{{route('recover-password')}}" >
                         @csrf
@@ -88,8 +75,12 @@
                                 <input class="form-control" type="text" required="" placeholder="Email" name="email"> </div>
                         </div>
                         <div class="form-group text-center m-t-20">
-                            <div class="col-xs-12">
+                            <div class="col-xs-3">
                                 <button class="btn btn-primary btn-lg w-100 text-uppercase waves-effect waves-light" onclick="recuperPasswd()">Recuperar</button>
+                            </div>
+                        <br>
+                            <div class="col-xs-3">
+                                <button class="btn btn-secondary btn-lg w-100 text-uppercase waves-effect waves-light" onclick="regresar()">Regresar</button>
                             </div>
                         </div>
                     </form>
@@ -129,6 +120,11 @@
 
         function entrar(){
             $('#loginform').submit();
+        }
+
+        function regresar() {
+            $("#loginform").fadeIn();
+            $("#recoverform").slideUp();
         }
     </script>
     
