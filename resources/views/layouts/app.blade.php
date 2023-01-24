@@ -33,7 +33,7 @@
 	</style>
 </head>
 
-<body class="skin-blue fixed-layout">
+<body class="skin-purple fixed-layout">
     @include('layouts.preloader')
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
@@ -60,8 +60,8 @@
                         <!-- Logo text --><span>
                          <!-- dark Logo text -->
                          <img src="{{asset('assets/images/logo-text.png')}}" alt="homepage" class="dark-logo" />
-                         <!-- Light Logo text -->    
-                         <img src="{{asset('assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /></span> 
+                         <!-- Light Logo text -->
+                         <img src="{{asset('assets/images/logo-light-text.png')}}" class="light-logo" alt="homepage" /></span>
 					</a>
                 </div>
                 <!-- ============================================================== -->
@@ -95,7 +95,7 @@
                 <!-- Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->
                 @yield('migajas')
-				@include('layouts.alertas')	
+				@include('layouts.alertas')
 				{{-- <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
                         <h4 class="text-themecolor">Fix Header Sidebar</h4>
@@ -113,7 +113,7 @@
                 <!-- ============================================================== -->
                 <!-- End Bread crumb and right sidebar toggle -->
                 <!-- ============================================================== -->
-				
+
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
