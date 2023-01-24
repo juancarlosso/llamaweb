@@ -52,9 +52,9 @@
                                                 &nbsp;
                                                 <a href="{{route('cuentas.importar',$cuenta->id)}}" class="btn btn-warning shadow btn-xs sharp mr-1" title="Importar teléfonos"><i class="fas fa-upload"></i></a>
                                                 &nbsp;
-                                                <a href="{{route('cuentas.edit',$cuenta->id)}}" class="btn btn-primary shadow btn-xs sharp mr-1" title="Estadísticas y reportes"><i class='fas fa-chart-pie'></i></a>
+                                                <a href="{{route('cuentas.estadisticas',$cuenta->id)}}" class="btn btn-primary shadow btn-xs sharp mr-1" title="Estadísticas y reportes"><i class='fas fa-chart-pie'></i></a>
                                                 &nbsp;
-                                                <a href="{{route('cuentas.edit',$cuenta->id)}}" class="btn btn-success shadow btn-xs sharp mr-1" title="Nueva barrida"><i class="fas fa-recycle"></i></a>
+                                                <a href="{{route('cuentas.barrida',$cuenta->id)}}" class="btn btn-success shadow btn-xs sharp mr-1" title="Nueva barrida"><i class="fas fa-recycle"></i></a>
                                                 &nbsp;
                                                 <a href="javascript:borrado({{$cuenta->id}})" class="btn btn-danger shadow btn-xs sharp" title="Eliminar"><i class="fas fa-trash"></i></a>
                                                 <form action="{{route('cuentas.destroy', $cuenta->id)}}" method="post" name="formBorrar{{$cuenta->id}}" id="formBorrar{{$cuenta->id}}">

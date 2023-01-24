@@ -8,6 +8,7 @@ use App\Models\Asterisk;
 use App\Helper\Funciones;
 use Illuminate\Http\Request;
 use App\Imports\CuentaImport;
+use App\Exports\reporteadorExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\CuentaImportRequest;
@@ -318,5 +319,262 @@ class CuentaController extends Controller
         DB::select($consulta);
 		return redirect()->route('cuentas.index')->with('success','El archivo de telefonos ha sido importado');
 	}
+
+
+    public function estadisticas($id){
+
+        $sql = "SELECT * FROM cuentas WHERE id = '{$id}'";
+        $resultado    = DB::select($sql);
+        $datos= $resultado[0];
+        $tabla = $datos->tabla_telefonos; 
+        switch($datos->tipo_robotica) {
+                case 'A': $tipo_mostrar = "Auto" ; $qi = " "; break;
+                case 'Q': $tipo_mostrar = "Queue"; $qi = " [" . $datos->queue . "] "; break;
+                case 'I': $tipo_mostrar = "Ivr"  ; $qi = " [" . $datos->ivr . "]" ; break;
+                default:
+                $tipo_mostrar = "Error!";
+                $qi = "Error";
+                break;
+        }
+        return view('cuentas.estadisticas')->with('cuenta_id',$id)->with('tabla',$tabla)->with('tipo_mostrar',$tipo_mostrar)->with('qi',$qi)->with('datos',$datos);
+
+    }
+
+    public function reporteador(Request $request) {
+
+        $tabla = $request->tabla;
+        $DESDE = $request->fecha_ini;
+        $HASTA = $request->fecha_fin;
+        return Excel::download(new reporteadorExport($tabla, $DESDE, $HASTA), 'reportecuentarobotica.xlsx');
+    }
+
+    public function barraTotal($idcuenta,$tabla)
+    {
+        // Extraemos la informacion
+        $tablaTelefonos=$tabla;
+        $sql="SELECT 
+        ( SELECT COUNT(*) FROM {$tablaTelefonos} WHERE status='0' ) AS sin_procesar,
+        ( SELECT COUNT(*) FROM {$tablaTelefonos} WHERE status<>'0' ) AS procesados ,
+        ( SELECT COUNT(*) FROM {$tablaTelefonos} ) AS total_registros ";
+        $resultAvance    = DB::select($sql);
+        $datosAvance     = $resultAvance[0];
+        $total_registros = $datosAvance->total_registros;
+        $procesados      = $datosAvance->procesados;
+        $sin_procesar    = $datosAvance->sin_procesar;
+        if($procesados==0||$total_registros==0){
+            $porcentaje = 0;
+        }
+        else{
+            $porcentaje =  round( ( $procesados / $total_registros ) * 100 );
+        }
+                                
+                $grafica = "<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='{$porcentaje}' aria-valuemin='0' aria-valuemax='100' style='width: {$porcentaje}%'>
+        <span>
+        {$porcentaje}% 
+        </span>
+        </div>" ;      
+                                
+        return $grafica;	
+    }
+
+    public function procesados($idcuenta,$tabla){
+
+        $outp     = array();
+                                        
+        // Extraemos el total de los registros
+        $sql="SELECT COUNT(*) AS total_recorridos FROM {$tabla} WHERE status<>0 ";// echo $sql;
+        $result    = DB::select($sql);
+        $datos = $result[0];
+        $total_registros = $datos->total_recorridos;
+        // Extraemos los valores				   
+        $consulta="SELECT disposition, COUNT(*) AS cantidad 
+        FROM {$tabla}
+        WHERE status <> 0
+        GROUP BY disposition
+        ORDER BY cantidad DESC";       
+        $result    = DB::select($consulta);
+        foreach($result as $key => $datos){
+            $porcentaje = ($datos->cantidad * 100)/$total_registros;
+            $outp[] = array("label"=> $datos->disposition, "value" => round($porcentaje));
+        }
+        
+        if (count($result) == 0) die ("Lo sentimos no hay valores");
+        
+        //Regresa el arreglo Json
+        echo  json_encode($outp); 
+    }
+
+
+    public function answered($idcuenta, $tabla){
+        $outp     = array();
+										
+		// Extraemos el total de los registros
+		$sql="SELECT COUNT(*) AS total_recorridos FROM {$tabla} WHERE disposition='ANSWER' OR disposition='ANSWERED'";// echo $sql;
+		$result = DB::select($sql);
+		$datos = $result[0];
+		$total_registros = $datos->total_recorridos;
+		// Extraemos los valores				   
+        $consulta="SELECT amd, COUNT(*) AS cantidad 
+        FROM {$tabla}
+        WHERE disposition='ANSWER' OR disposition='ANSWERED'
+        GROUP BY amd";       
+        $result = DB::select($consulta);
+        foreach($result as $key => $datos){
+            $porcentaje = ($datos->cantidad * 100)/$total_registros;
+            $outp[] = array("label"=> $datos->amd, "value" => round($porcentaje));
+        }
+        
+        if (count($result) == 0)  die ("Lo sentimos no hay valores");
+        
+        //Regresa el arreglo Json
+        echo  json_encode($outp);
+    }
+
+    public function barrida($idcuenta)
+    {
+        $cuenta = Cuenta::findOrfail($idcuenta);
+        return view('cuentas.barrida')->with('cuenta',$cuenta);
+    }
+
+    public function barridaUpdate(Request $request)
+    {
+        
+        $cuenta = Cuenta::findOrfail($request->idcuenta);
+
+        // ************* Generamos el reporte de lo que se reintegrara  *****************************//
+        $dispo = $request->dispo;
+        $activar_cuenta = $request->activarcuenta;
+        $linea = 1;
+        $cuerpo_tabla = '';
+        $consulta = "SELECT COUNT(telefono) AS cantidad FROM {$cuenta->tabla_telefonos} WHERE disposition = 'PROCESADO'";
+        $result = DB::select($consulta);
+        $datos  = $result[0];
+        $cuerpo_tabla.= "<tr>
+                        <th scope='row'>$linea</th>
+                        <td>PROCESADOS</td>
+                        <td align='center'>{$datos->cantidad}</td>";
+        if($datos->cantidad){
+            $estado = "Reintegrados";
+        }
+        else{
+            $estado = "No reintegrados";
+        }
+        $cuerpo_tabla.="<td>{$estado}</td>
+                            </tr>";
+
+
+        for( $x=0; $x<count($dispo); $x++ )
+        {
+            $dis=$dispo[$x];
+            $linea++;
+            if($dis=='ANSWERED-H')
+            { 
+                $consulta = "select COUNT(telefono) as cantidad from {$cuenta->tabla_telefonos} where disposition = 'ANSWERED' AND ( amd LIKE '%HUMAN%' OR amd LIKE '%PERSON%' )";
+                $result = DB::select($consulta);
+                $datos  = $result[0];
+                $cuerpo_tabla.= "<tr>
+                                <th scope='row'>$linea</th>
+                                <td>ANSWERED - HUMAN</td>
+                                <td align='center'>{$datos->cantidad}</td>";
+            }
+            if($dis=='ANSWERED-M')
+            { 
+                $consulta = "select COUNT(telefono) as cantidad from {$cuenta->tabla_telefonos} where disposition = 'ANSWERED' AND amd LIKE '%MACHINE%'";
+                $result = DB::select($consulta);
+                $datos  = $result[0];
+                $cuerpo_tabla.= "<tr>
+                                <th scope='row'>$linea</th>
+                                <td>ANSWERED - MACHINE</td>
+                                <td align='center'>{$datos->cantidad}</td>";
+            }
+            if($dis=='ANSWERED-N')
+            { 
+                $consulta = "select COUNT(telefono) as cantidad from {$cuenta->tabla_telefonos} where disposition = 'ANSWERED' AND amd LIKE '%NOTSURE%'";
+                $result = DB::select($consulta);
+                $datos  = $result[0];
+                $cuerpo_tabla.= "<tr>
+                                <th scope='row'>$linea</th>
+                                <td>ANSWERED - NOTSURE</td>
+                                <td align='center'>{$datos->cantidad}</td>";
+            }
+            if( preg_match("/{$dis}/","NO ANSWER,BUSY,FAILED,SINCANAL") )
+            {
+                $consulta = "select COUNT(telefono) as cantidad from {$cuenta->tabla_telefonos} where disposition = '$dis' ";
+                $result = DB::select($consulta);
+                $datos  = $result[0];
+                $cuerpo_tabla.= "<tr>
+                                <th scope='row'>$linea</th>
+                                <td>{$dis}</td>
+                                <td align='center'>{$datos->cantidad}</td>";
+            }
+            if($datos->cantidad){
+                $estado = "Reintegrados";
+            }
+            else{
+                $estado = "No reintegrados";
+            }
+            $cuerpo_tabla.="<td>{$estado}</td>
+                                </tr>";
+            
+        }	
+
+        //  *************************** Inicia el proceso de reintegro de registros *********************
+        $hay_otro=false;
+        $hay_answered_h=false;
+        $consulta = "UPDATE {$cuenta->tabla_telefonos} SET status=0, disposition='SINDISPOSITION' WHERE disposition='PROCESADO' ";
+        DB::select($consulta);
+        $consulta = "UPDATE {$cuenta->tabla_telefonos} 
+                    SET disposition='SINDISPOSITION',
+                    amd='SINAMD',
+                    status=0, 
+                    tiempo=0,
+                    fecha_hora = NULL, 
+                    amdcause=''
+                    WHERE ";
+        for( $x=0; $x<count($dispo); $x++ )
+        {
+            $dis=$dispo[$x];
+            if($dis=='ANSWERED-H')
+            { 
+                $hay_answered_h = true;
+                $consulta .= " ( disposition = 'ANSWERED' AND ( amd LIKE '%HUMAN%' OR amd LIKE '%PERSON%' ) )";
+            }
+            if($dis=='ANSWERED-M')
+            { 
+                if( $hay_answered_h ) { $consulta .= " OR "; }
+                $hay_answered_m = true;
+                $consulta .= " ( disposition = 'ANSWERED' AND amd LIKE '%MACHINE%' )";
+            }
+            if($dis=='ANSWERED-N')
+            { 
+                if( $hay_answered_m || $hay_answered_h ) { $consulta .= " OR "; }
+                $hay_answered_n = true;
+                $consulta .= " ( disposition = 'ANSWERED' AND amd LIKE '%NOTSURE%' )";
+            }
+            if( preg_match("/{$dis}/","NO ANSWER,BUSY,FAILED,SINCANAL") )
+            {
+                if( $hay_answered_h || $hay_answered_m  || $hay_answered_n  || $hay_otro ) { $consulta .= " OR "; }
+                $consulta .= " disposition = '$dis' ";
+                $hay_otro = true;
+            }
+            
+        }		 
+        
+        DB::select($consulta);
+        
+        if($activar_cuenta == "ok"){
+            $estado_cuenta = "activada";
+            $consulta = "UPDATE cuentas set activa = 'S' WHERE id='{$request->idcuenta}' ";
+            
+        }
+        else{
+            $estado_cuenta = "desactivada";
+            $consulta = "UPDATE cuentas set activa = 'N' WHERE id='{$request->idcuenta}' ";
+        }
+        
+        DB::select($consulta);
+
+        return view('cuentas.barridaUpdate')->with('cuenta',$cuenta)->with('cuerpo_tabla',$cuerpo_tabla)->with('estado_cuenta',$estado_cuenta);
+    }
 
 }
