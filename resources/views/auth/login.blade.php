@@ -12,13 +12,13 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('assets/images/favicon.png')}}">
     <title>{{config('app.name')}}</title>
-    
+
     <!-- page css -->
     <link href="{{asset('assets/dist/css/pages/login-register-lock.css')}}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{asset('assets/dist/css/style.min.css')}}" rel="stylesheet">
-    
-    
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -39,10 +39,15 @@
                     <form method="post" class="form-horizontal form-material" id="loginform" action="{{route('login.custom')}}">
                         @csrf
                         <h3 class="text-center m-b-20">ACCESO AL PANEL</h3>
+                        <div class="form-group text-center">
+                            <div class="col-xs-12 text-center">
+                               <img src="{{asset('assets/images/llama_morada.png')}}" width="30%">
+                            </div>
+                        </div>
                         @include('layouts.alertas')
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="email" placeholder="E-mail" name="email"> 
+                                <input class="form-control" type="email" placeholder="E-mail" name="email">
                             </div>
                         </div>
                         <div class="form-group">
@@ -53,7 +58,7 @@
                             <div class="col-md-12">
                                 <div class="d-flex no-block align-items-center">
                                     <div class="ms-auto">
-                                        <a href="javascript:void(0)" id="to-recover" class="text-muted"><i class="fas fa-lock m-r-5"></i> ¿Olvidaste tu password?</a> 
+                                        <a href="javascript:void(0)" id="to-recover" class="text-muted"><i class="fas fa-lock m-r-5"></i> ¿Olvidaste tu password?</a>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +96,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
@@ -109,9 +114,9 @@
         $(function() {
             $('[data-bs-toggle="tooltip"]').tooltip()
         });
-        // ============================================================== 
-        // Login and Recover Password 
-        // ============================================================== 
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
         $('#to-recover').on("click", function() {
             $("#loginform").slideUp();
             $("#recoverform").fadeIn();
@@ -130,7 +135,7 @@
             $("#recoverform").slideUp();
         }
     </script>
-    
+
 </body>
 
 </html>
