@@ -121,6 +121,12 @@
                                      </select>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class='form-group col-sm-3'>
+                                    <label>CALLERID:</label>
+                                    <input class='form-control'  id='callerid' name='callerid' type='text' value="{{old('email',$cuenta->callerid)}}">                             
+                                </div> 
+                            </div>
                             <input type="hidden" name="slot" id="slot" value="{{$cuenta->slot}}">
                             {{-- <button type="submit" class="btn btn-primary">Sign in</button> --}}
                             <div class="widget-footer" align="right">

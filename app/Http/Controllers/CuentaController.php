@@ -128,6 +128,7 @@ class CuentaController extends Controller
         $cuenta->troncal = $request->troncal;
         $cuenta->incluir_buzon = $request->incluir_buzon;
         $cuenta->slot = $slot;
+        $cuenta->callerid = $request->callerid;
         $cuenta->save();
 
         $ultimoInsertado = $cuenta->id;
@@ -256,6 +257,7 @@ class CuentaController extends Controller
         $cuenta->troncal = $request->troncal;
         $cuenta->incluir_buzon = $request->incluir_buzon;
         $cuenta->slot = $slot;
+        $cuenta->callerid = $request->callerid;
         $cuenta->save();
 
         return redirect()->route('cuentas.index')->with('success','La Cuenta ha sido actualizada');

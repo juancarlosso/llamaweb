@@ -120,6 +120,12 @@
                                      </select>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class='form-group col-sm-3'>
+                                    <label>CALLERID:</label>
+                                    <input class='form-control'  id='callerid' name='callerid' type='text' value="" size="25" maxlength="50">                             
+                                </div> 
+                            </div>
                             {{-- <button type="submit" class="btn btn-primary">Sign in</button> --}}
                             <div class="widget-footer" align="right">
                                 <a href="{{route('cuentas.index')}}" class="btn btn-outline-danger"><i class="fas fa-times"></i> Cancelar</a>
